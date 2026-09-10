@@ -6,7 +6,7 @@ The site follows **Introduction → About / CV → Selected work → Contact**, 
 
 ## Run locally
 
-The project keeps the same React 19, TypeScript, Vite, TanStack Router, Tailwind 4 and Bun/Turbo workspace foundation as `mattgale.photography`.
+The project keeps the same React 19, TypeScript, Vite, TanStack Router, Tailwind 4 and Bun/Turbo workspace foundation as `mattgale-photography.pages.dev`.
 
 ```bash
 cd website

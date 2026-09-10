@@ -13,7 +13,7 @@ This portfolio uses the same static React/Vite workspace foundation as the photo
 | Public experience    | Cover and archive routes                                          | One page with native section anchors                     |
 | Discovery            | Generated archive sitemap                                         | Generated homepage sitemap; blog pages only when enabled |
 | Static hosting files | `public/_headers`, `public/_redirects`                            | Same conventions; legacy page redirects added            |
-| Domain               | `mattgale.photography`                                            | `matthewgale.co.uk`                                      |
+| Domain               | `mattgale-photography.pages.dev`                                            | `matthewgale.co.uk`                                      |
 
 Keep each repository and deployment separate. Share the approach and conventions; a shared component package would add unnecessary coupling to these two small sites.
 

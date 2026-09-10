@@ -9,7 +9,7 @@ export const site = {
   location: "London, UK",
   github: "https://github.com/mgale694",
   linkedin: "https://linkedin.com/in/M-Gale",
-  photography: "https://mattgale.photography",
+  photography: "https://mattgale-photography.pages.dev",
   blog: {
     enabled: false,
     externalUrl: "https://atlas-website-6cn.pages.dev/research/",

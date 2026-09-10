@@ -60,7 +60,7 @@ The hero's signal point is now the exact shared point of every strand and follow
 Actual site screenshots were captured on 10 September 2026:
 
 - `public/showcase/atlas-homepage.webp`: Atlas's supplied development site, https://atlas-website-6cn.pages.dev/.
-- `public/showcase/photography-homepage.webp`: the current local photography app, served from the existing `mattgale.photography` repo. The production domain did not resolve during capture. The screenshot is a development preview, not evidence of deployment.
+- `public/showcase/photography-homepage.webp`: the current local photography app, served from the existing `mattgale-photography.pages.dev` repo. The production domain did not resolve during capture. The screenshot is a development preview, not evidence of deployment.
 - `tokyo-temple.webp` and `tokyo-pagoda.webp`: existing user-owned Nikon F3 photographs from the photography archive's February 2025 Tokyo collection.
 
 Project previews are intentionally presented on their own. The photography homepage no longer has a separate film photograph layered beside it.
