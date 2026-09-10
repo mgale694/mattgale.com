@@ -12,7 +12,7 @@ export function CredentialStrip({
 }) {
   return (
     <div className="credential-strip" aria-label="Certifications">
-      <Eyebrow>04 / Certifications</Eyebrow>
+      <Eyebrow>Certifications</Eyebrow>
       <ul>
         {items.map((item) => (
           <li key={`${item.title}-${item.detail}`}>

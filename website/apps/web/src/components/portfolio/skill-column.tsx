@@ -12,7 +12,7 @@ export function SkillColumn({
     <div className="skill-column">
       <h3>
         <Eyebrow>
-          {number} / {title}
+          {title}
         </Eyebrow>
         <span className="signal-line" aria-hidden="true" />
       </h3>
