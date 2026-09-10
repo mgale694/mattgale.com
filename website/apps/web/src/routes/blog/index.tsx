@@ -1,11 +1,27 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { site } from "@/content/site";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Clock } from "lucide-react";
-import { getAllBlogPosts, getFeaturedBlogPosts, groupPostsByDate, type BlogPost } from "@/lib/blog";
+import {
+  getAllBlogPosts,
+  getFeaturedBlogPosts,
+  groupPostsByDate,
+  type BlogPost,
+} from "@/lib/blog";
 import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/blog/")({
+  beforeLoad: () => {
+    if (!site.blog.enabled)
+      throw redirect({ to: "/", hash: "work", replace: true });
+  },
   head: () => ({
     meta: [
       {
@@ -13,11 +29,13 @@ export const Route = createFileRoute("/blog/")({
       },
       {
         name: "description",
-        content: "Read Matthew Gale's blog about software development, web technologies, and tech insights. Discover tutorials, thoughts, and experiences from a passionate developer.",
+        content:
+          "Read Matthew Gale's blog about software development, web technologies, and tech insights. Discover tutorials, thoughts, and experiences from a passionate developer.",
       },
       {
         name: "keywords",
-        content: "Matthew Gale blog, software development, web development, programming, React, TypeScript, tech blog",
+        content:
+          "Matthew Gale blog, software development, web development, programming, React, TypeScript, tech blog",
       },
       {
         property: "og:type",
@@ -29,7 +47,8 @@ export const Route = createFileRoute("/blog/")({
       },
       {
         property: "og:description",
-        content: "Read Matthew Gale's blog about software development, web technologies, and tech insights. Discover tutorials, thoughts, and experiences from a passionate developer.",
+        content:
+          "Read Matthew Gale's blog about software development, web technologies, and tech insights. Discover tutorials, thoughts, and experiences from a passionate developer.",
       },
       {
         property: "og:url",
@@ -52,15 +71,19 @@ export const Route = createFileRoute("/blog/")({
 
 function BlogPostCard({ post }: { post: BlogPost }) {
   // Always load both banner URLs
-  const bannerLight = post.bannerUrl ? post.bannerUrl.replace('/src', '') : undefined;
-  const bannerDark = post.bannerUrlDark ? post.bannerUrlDark.replace('/src', '') : undefined;
+  const bannerLight = post.bannerUrl
+    ? post.bannerUrl.replace("/src", "")
+    : undefined;
+  const bannerDark = post.bannerUrlDark
+    ? post.bannerUrlDark.replace("/src", "")
+    : undefined;
 
   return (
     <Link
       to="/blog/$postId"
       params={{ postId: post.id }}
       className="block h-full"
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      style={{ textDecoration: "none", color: "inherit" }}
     >
       <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
         {(bannerLight || bannerDark) && (
@@ -68,18 +91,18 @@ function BlogPostCard({ post }: { post: BlogPost }) {
             {bannerLight && (
               <img
                 src={bannerLight}
-                alt={post.title + ' banner'}
+                alt={post.title + " banner"}
                 className="block dark:hidden w-full h-auto object-cover"
-                style={{ aspectRatio: '8/3', objectFit: 'cover' }}
+                style={{ aspectRatio: "8/3", objectFit: "cover" }}
                 loading="lazy"
               />
             )}
             {bannerDark && (
               <img
                 src={bannerDark}
-                alt={post.title + ' banner'}
+                alt={post.title + " banner"}
                 className="hidden dark:block w-full h-auto object-cover"
-                style={{ aspectRatio: '8/3', objectFit: 'cover' }}
+                style={{ aspectRatio: "8/3", objectFit: "cover" }}
                 loading="lazy"
               />
             )}
@@ -91,9 +114,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
               <CardTitle className="text-xl leading-tight">
                 {post.title}
               </CardTitle>
-              {post.featured && (
-                <Badge className="mt-2">Featured</Badge>
-              )}
+              {post.featured && <Badge className="mt-2">Featured</Badge>}
             </div>
           </div>
           <CardDescription className="text-base line-clamp-3">
@@ -105,10 +126,10 @@ function BlogPostCard({ post }: { post: BlogPost }) {
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <CalendarDays className="w-4 h-4" />
-                {new Date(post.date).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+                {new Date(post.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </div>
               <div className="flex items-center gap-1">
@@ -133,7 +154,9 @@ function BlogPostCard({ post }: { post: BlogPost }) {
 function BlogComponent() {
   const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
-  const [groupedPosts, setGroupedPosts] = useState<Record<string, Record<string, BlogPost[]>>>({});
+  const [groupedPosts, setGroupedPosts] = useState<
+    Record<string, Record<string, BlogPost[]>>
+  >({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -147,7 +170,7 @@ function BlogComponent() {
         setFeaturedPosts(featured);
         setGroupedPosts(grouped);
       } catch (error) {
-        console.error('Error loading blog posts:', error);
+        console.error("Error loading blog posts:", error);
       } finally {
         setLoading(false);
       }
@@ -196,29 +219,47 @@ function BlogComponent() {
           {Object.entries(groupedPosts)
             .sort(([yearA], [yearB]) => parseInt(yearB) - parseInt(yearA))
             .map(([year, months]) => (
-            <div key={year} className="space-y-8">
-              <h3 className="text-3xl font-bold text-primary border-b pb-2">{year}</h3>
-              
-              <div className="space-y-8">
-                {Object.entries(months)
-                  .sort(([monthA], [monthB]) => {
-                    const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                      'July', 'August', 'September', 'October', 'November', 'December'];
-                    return monthOrder.indexOf(monthB) - monthOrder.indexOf(monthA);
-                  })
-                  .map(([month, posts]) => (
-                  <div key={month}>
-                    <h4 className="text-xl font-semibold mb-4 text-muted-foreground">{month}</h4>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {posts.map((post: BlogPost) => (
-                        <BlogPostCard key={post.id} post={post} />
-                      ))}
-                    </div>
-                  </div>
-                ))}
+              <div key={year} className="space-y-8">
+                <h3 className="text-3xl font-bold text-primary border-b pb-2">
+                  {year}
+                </h3>
+
+                <div className="space-y-8">
+                  {Object.entries(months)
+                    .sort(([monthA], [monthB]) => {
+                      const monthOrder = [
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December",
+                      ];
+                      return (
+                        monthOrder.indexOf(monthB) - monthOrder.indexOf(monthA)
+                      );
+                    })
+                    .map(([month, posts]) => (
+                      <div key={month}>
+                        <h4 className="text-xl font-semibold mb-4 text-muted-foreground">
+                          {month}
+                        </h4>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {posts.map((post: BlogPost) => (
+                            <BlogPostCard key={post.id} post={post} />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </section>
 

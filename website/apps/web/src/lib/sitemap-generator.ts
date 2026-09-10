@@ -1,87 +1,54 @@
-// Build-time sitemap generator
-import { getAllBlogPosts } from './blog.js';
-import fs from 'fs';
-import path from 'path';
+// Build-time only. No browser glob imports or application runtime needed.
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import matter from "gray-matter";
+import { site } from "../content/site";
 
-interface SitemapUrl {
-  loc: string;
-  lastmod: string;
-  changefreq: string;
-  priority: string;
+const appRoot = fileURLToPath(new URL("../../", import.meta.url));
+const contentRoot = path.join(appRoot, "src/content/blog");
+const escapeXml = (value: string) =>
+  value.replace(
+    /[<>&"']/g,
+    (char) =>
+      ({
+        "<": "&lt;",
+        ">": "&gt;",
+        "&": "&amp;",
+        '"': "&quot;",
+        "'": "&apos;",
+      })[char]!,
+  );
+
+function markdownFiles(directory: string): string[] {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const filename = path.join(directory, entry.name);
+    return entry.isDirectory()
+      ? markdownFiles(filename)
+      : entry.name.endsWith(".md")
+        ? [filename]
+        : [];
+  });
 }
 
-async function generateSitemap() {
-  const baseUrl = 'https://matthewgale.co.uk';
-  const urls: SitemapUrl[] = [];
-
-  // Static pages
-  urls.push({
-    loc: baseUrl,
-    lastmod: new Date().toISOString().split('T')[0],
-    changefreq: 'weekly',
-    priority: '1.0'
-  });
-
-  urls.push({
-    loc: `${baseUrl}/blog`,
-    lastmod: new Date().toISOString().split('T')[0],
-    changefreq: 'weekly',
-    priority: '0.8'
-  });
-
-  urls.push({
-    loc: `${baseUrl}/about`,
-    lastmod: new Date().toISOString().split('T')[0],
-    changefreq: 'monthly',
-    priority: '0.8'
-  });
-
-  urls.push({
-    loc: `${baseUrl}/showcase`,
-    lastmod: new Date().toISOString().split('T')[0],
-    changefreq: 'monthly',
-    priority: '0.7'
-  });
-
-  try {
-    // Add blog posts
-    const blogPosts = await getAllBlogPosts();
-    for (const post of blogPosts) {
-      urls.push({
-        loc: `${baseUrl}/blog/${post.id}`,
-        lastmod: post.date,
-        changefreq: 'never',
-        priority: '0.6'
-      });
+export function generateSitemap() {
+  const urls = [site.url + "/"];
+  if (site.blog.enabled) {
+    urls.push(site.url + "/blog");
+    for (const filename of markdownFiles(contentRoot)) {
+      // The existing blog router uses the markdown basename as its ID.
+      const id = path.basename(filename, ".md");
+      const { data } = matter(fs.readFileSync(filename, "utf8"));
+      if (data.title) urls.push(site.url + "/blog/" + encodeURIComponent(id));
     }
-
-    console.log(`Added ${blogPosts.length} blog posts to sitemap`);
-  } catch (error) {
-    console.warn('Could not load blog posts for sitemap:', error);
   }
-
-  // Generate XML
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(url => `  <url>
-    <loc>${url.loc}</loc>
-    <lastmod>${url.lastmod}</lastmod>
-    <changefreq>${url.changefreq}</changefreq>
-    <priority>${url.priority}</priority>
-  </url>`).join('\n')}
-</urlset>`;
-
-  // Write to public directory
-  const publicDir = path.join(process.cwd(), 'public');
-  const sitemapPath = path.join(publicDir, 'sitemap.xml');
-  
-  fs.writeFileSync(sitemapPath, xml);
-  console.log(`Sitemap generated with ${urls.length} URLs at ${sitemapPath}`);
+  const xml =
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    [...new Set(urls)]
+      .map((url) => `  <url><loc>${escapeXml(url)}</loc></url>`)
+      .join("\n") +
+    "\n</urlset>\n";
+  fs.writeFileSync(path.join(appRoot, "public/sitemap.xml"), xml);
+  console.log(`Sitemap generated for ${urls.length} public page(s).`);
 }
-
-// Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  generateSitemap().catch(console.error);
-}
-
-export { generateSitemap };
+generateSitemap();

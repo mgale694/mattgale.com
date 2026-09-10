@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3001",
-    "build": "vite build",
-    "generate-sitemap": "echo 'Sitemap generation temporarily disabled during build'",
+    "build": "npm run generate-sitemap && vite build",
+    "generate-sitemap": "tsx src/lib/sitemap-generator.ts",
     "seo-check": "echo 'SEO check available - run after build'",
     "serve": "vite preview",
     "start": "vite",

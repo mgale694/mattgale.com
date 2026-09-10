@@ -1,237 +1,107 @@
-# [matthewgale.co.uk](https://matthewgale.co.uk)
+# Matthew Gale
 
-A modern, minimalist personal website built with React, TypeScript, and TanStack Router. Features a blog system powered by markdown files and showcases projects and professional experience.
+An editorial one-page portfolio for quantitative development, independent projects and a little personal background.
 
-## 🚀 Tech Stack
+The site follows **Introduction → About / CV → Selected work → Contact**, using the five images in `docs/reference/` and [wodniack.dev](https://wodniack.dev/) as visual and flow references. Abstract line studies give a quiet nod to financial modelling.
 
-- **Frontend**: React 19, TypeScript
-- **Routing**: TanStack Router (file-based routing)
-- **Styling**: Tailwind CSS 4.0
-- **Build Tool**: Vite
-- **Package Manager**: Bun
-- **Monorepo**: Turbo
-- **UI Components**: Radix UI + shadcn/ui
-- **Content**: Markdown files for blog posts
+## Run locally
 
-## 📁 Project Structure
-
-```
-website/
-├── apps/
-│   └── web/                    # Main web application
-│       ├── src/
-│       │   ├── components/     # Reusable UI components
-│       │   │   ├── ui/        # Base UI components (shadcn/ui)
-│       │   │   ├── header.tsx # Site navigation
-│       │   │   └── ...
-│       │   ├── routes/        # File-based routing (TanStack Router)
-│       │   │   ├── __root.tsx # Root layout
-│       │   │   ├── index.tsx  # Homepage
-│       │   │   ├── about.tsx  # About page
-│       │   │   ├── showcase.tsx # Projects showcase
-│       │   │   └── blog/      # Blog routes
-│       │   │       ├── index.tsx    # Blog listing
-│       │   │       └── $postId.tsx  # Individual blog posts
-│       │   ├── content/       # Content management
-│       │   │   └── blog/      # Markdown blog posts
-│       │   ├── lib/           # Utility functions
-│       │   │   ├── utils.ts   # General utilities
-│       │   │   └── blog.ts    # Blog management utilities
-│       │   └── ...
-│       ├── package.json
-│       └── vite.config.ts
-└── ...
-```
-
-## 🎯 Website Sections
-
-### Homepage (`/`)
-
-- Hero section with personal introduction
-- Quick navigation cards to main sections
-- Contact call-to-action
-
-### About Page (`/about`)
-
-- Personal background and experience
-- Technologies and skills
-- Quick facts and availability status
-
-### Showcase (`/showcase`)
-
-- Featured and other projects
-- Project details with technology stack
-- Links to live demos and source code
-
-### Blog (`/blog`)
-
-- Blog post listings with featured posts
-- Individual blog post pages (`/blog/{id}`)
-- Tag-based categorization
-- Reading time estimates
-
-## 🔧 Development
-
-### Prerequisites
-
-- [Bun](https://bun.sh/) (latest version)
-- Node.js 18+ (for compatibility)
-
-### Getting Started
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/mgale694/matthewgale.co.uk.git
-   cd matthewgale.co.uk
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   cd website
-   bun install
-   ```
-
-3. **Start development server**
-
-   ```bash
-   bun run dev:web
-   ```
-
-   The site will be available at `http://localhost:3001`
-
-### Available Scripts
-
-```bash
-# Development
-bun run dev          # Start all apps in development mode
-bun run dev:web      # Start only the web app
-
-# Building
-bun run build        # Build all apps for production
-bun run check-types  # Type check all apps
-
-# Individual app commands
-cd apps/web
-bun run dev          # Start web app development server
-bun run build        # Build web app for production
-bun run serve        # Preview production build locally
-```
-
-## 📝 Adding Blog Posts
-
-Blog posts are stored as Markdown files in `src/content/blog/`. Each post requires frontmatter:
-
-```markdown
----
-title: "Your Blog Post Title"
-date: "2024-03-15"
-excerpt: "A brief description of your post"
-tags: ["React", "TypeScript", "Web Development"]
-featured: true
-readTime: "5 min read"
----
-
-# Your Blog Post Title
-
-Your blog content here...
-```
-
-### Blog Post Guidelines
-
-1. **File naming**: Use kebab-case (e.g., `my-blog-post.md`)
-2. **Images**: Store in `public/images/blog/` and reference relatively
-3. **Code blocks**: Use proper syntax highlighting with language tags
-4. **Featured posts**: Set `featured: true` to display in the featured section
-
-## 🎨 Customization
-
-### Design System
-
-The website uses a custom design system built on Tailwind CSS:
-
-- **Colors**: Defined in `tailwind.config.js`
-- **Typography**: Custom font scales and weights
-- **Components**: Built with Radix UI primitives
-- **Dark mode**: Automatic theme switching
-
-### Adding New Pages
-
-1. Create a new file in `src/routes/` (e.g., `contact.tsx`)
-2. Use the TanStack Router file-based convention
-3. Add navigation links in `src/components/header.tsx`
-
-Example page structure:
-
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/contact")({
-  component: ContactComponent,
-});
-
-function ContactComponent() {
-  return (
-    <div className="container mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8">Contact</h1>
-      {/* Your page content */}
-    </div>
-  );
-}
-```
-
-## 🚀 Deployment
-
-The website is configured for deployment on modern hosting platforms:
-
-### Vercel (Recommended)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-```
-
-### Netlify
-
-```bash
-# Build command
-cd website && bun run build
-
-# Publish directory
-website/apps/web/dist
-```
-
-### Traditional Hosting
+The project keeps the same React 19, TypeScript, Vite, TanStack Router, Tailwind 4 and Bun/Turbo workspace foundation as `mattgale.photography`.
 
 ```bash
 cd website
-bun run build
-# Upload the contents of apps/web/dist/ to your web server
+bun install
+bun run dev:web
 ```
 
-## 📄 License
+The normal development port is 3001. To run both portfolios together, use port 3002 for this one:
 
-MIT License - see [LICENSE](LICENSE) file for details.
+```bash
+cd website/apps/web
+npm run dev -- --port 3002
+```
 
-## 🤝 Contributing
+With dependencies already installed, npm also runs the app scripts directly.
 
-This is a personal website, but if you notice any issues or have suggestions:
+## Content and configuration
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+| Edit                                                                | File                                             |
+| ------------------------------------------------------------------- | ------------------------------------------------ |
+| Name, contact details, social links, photography URL, blog settings | `website/apps/web/src/content/site.ts`           |
+| Work experience and skills                                          | `website/apps/web/src/content/site.ts`           |
+| Project order, descriptions, technologies, links and featured state | `website/apps/web/src/content/projects.ts`       |
+| Typography, palette, layout and responsive rules                    | `website/apps/web/src/index.css`                 |
+| Reusable component contracts                                        | [COMPONENTS.md](COMPONENTS.md)                   |
+| Review findings and design decisions                                | [docs/REFACTOR_NOTES.md](docs/REFACTOR_NOTES.md) |
+| Static hosting and photography-site comparison                      | [DEPLOYMENT.md](DEPLOYMENT.md)                   |
 
-## 📞 Contact
+Featured projects form a horizontal exhibition controlled by normal vertical scrolling. Click a composition to open its details, preview and real links. Projects marked `featured: false` appear as expandable rows under “More experiments”. Private work is labelled and has no pretend demo link.
 
-- **Website**: [matthewgale.co.uk](https://matthewgale.co.uk)
-- **Email**: hello@matthewgale.co.uk
-- **GitHub**: [@mgale694](https://github.com/mgale694)
+To add real project media, place it in `website/apps/web/public/showcase/` and set `preview` in the project record:
 
----
+```ts
+preview: {
+  type: "image",
+  src: "/showcase/project-homepage.webp",
+  alt: "Describe the actual screen shown",
+  width: 1440,
+  height: 1000,
+}
+```
 
-Built with ❤️ using modern web technologies.
+For a short silent recording, use `type: "video"`, an MP4/WebM source and a `poster` path to a still image. `type: "gif"` also requires a still `poster`. Prefer compressed videos over large GIFs. Previews respect visibility, reduced motion and the page's pause control; the project dialog exposes native video controls. Atlas and photography already have actual homepage captures. Capture provenance is recorded in `docs/REFACTOR_NOTES.md`.
+
+The CV opens within About. “Print / save CV” uses the browser’s print dialog and a dedicated CV print layout. Career dates and qualifications come from the previous About page.
+
+## Writing and the optional local blog
+
+The local blog is disabled by default:
+
+```ts
+blog: {
+  enabled: false,
+  externalUrl: "https://atlas-website-6cn.pages.dev/research/",
+}
+```
+
+The external URL is deliberately the development destination supplied for this refactor. Change it here when Atlas moves to its production domain. A project’s `articleSlug` is appended to that base:
+
+```ts
+articleSlug: "mapping-macro-regimes-without-false-precision";
+```
+
+Set `enabled: true` and rebuild to restore the Blog navigation link, local routes and sitemap entries. Existing Markdown and blog components are retained. This switch controls publishing/navigation, not access to confidential content: do not put private material in the repository or public assets.
+
+The existing blog uses the Markdown filename without its extension as the post ID; use unique filenames. The current `2025-08-24/index.md` resolves to `/blog/index` when enabled. Post assets live under `public/blog/`.
+
+## Build
+
+```bash
+cd website
+bun run build:web
+```
+
+Or, with installed dependencies:
+
+```bash
+cd website/apps/web
+npm run build
+```
+
+Both regenerate the public sitemap and output the static site to `website/apps/web/dist`. `npm run serve -- --port 4173` previews the production output. The build has no test step.
+
+## Routes
+
+- `/` contains `#home`, `#about`, `#cv`, `#work` and `#contact`.
+- `/about` redirects to `/#about`.
+- `/showcase` redirects to `/#work`.
+- Disabled local blog requests redirect to `/#work`.
+- Unrecognised routes show a return-to-portfolio screen.
+
+## Design and accessibility
+
+Fonts are self-hosted with their open-source licences. The default editorial appearance alternates ink and paper sections; the contrast control switches to an all-paper appearance and remembers the choice. The whole-page transition reveals light from right to left and the editorial appearance from left to right, with an immediate reduced-motion fallback.
+
+Vertical scroll also drives masked heading reveals, hero depth, the horizontal Work exhibition, project-row entry and a page-progress rail. Name letters occasionally roll up, down, left or right. The hero's red convergence point follows the pointer. Navigation uses native smooth scrolling with normal URL hashes and browser history. A mobile menu supports Escape and visible keyboard focus. Motion pauses off-screen and in hidden tabs, respects reduced motion, and has a page-wide pause control. Work becomes a vertical exhibition when motion is paused or reduced, on short screens, or without native scroll-timeline support.
+
+No tests were added or run for this refactor, as requested.

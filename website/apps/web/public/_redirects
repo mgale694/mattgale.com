@@ -1,10 +1,5 @@
-# Handle static assets first (don't redirect these)
-/assets/*  /assets/:splat  200
-/favicon.ico  /favicon.ico  200
-/robots.txt  /robots.txt  200
-/site.webmanifest  /site.webmanifest  200
-/sw.js  /sw.js  200
-/_headers  /_headers  200
-
-# Handle SPA routing - redirect everything else to index.html
-/*  /index.html  200
+# Preserve existing links into the one-page portfolio.
+/about       /#about    301
+/showcase    /#work     301
+# Static files are served directly; other paths use TanStack Router.
+/*           /index.html 200

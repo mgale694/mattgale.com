@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { site } from "@/content/site";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableOfContents } from "@/components/table-of-contents";
@@ -6,29 +7,33 @@ import { ArrowLeft, CalendarDays, Clock, Copy, Check } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { getBlogPost, type BlogPost } from "@/lib/blog";
 import { getAllBlogPosts } from "@/lib/blog";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
-import { useState, useEffect } from 'react';
-import '../../code-highlight.css';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import { useState, useEffect } from "react";
+import "../../code-highlight.css";
 
 export const Route = createFileRoute("/blog/$postId")({
+  beforeLoad: () => {
+    if (!site.blog.enabled)
+      throw redirect({ to: "/", hash: "work", replace: true });
+  },
   loader: async ({ params }) => {
     const post = await getBlogPost(params.postId);
     if (!post) {
-      throw new Error('Post not found');
+      throw new Error("Post not found");
     }
     return { post };
   },
   head: (ctx) => {
     const post = ctx.loaderData?.post;
     if (!post) return {};
-    
+
     const excerpt = post.content
       .slice(0, 160)
-      .replace(/[#*`\n]/g, ' ')
+      .replace(/[#*`\n]/g, " ")
       .trim();
-    
+
     return {
       meta: [
         {
@@ -40,7 +45,7 @@ export const Route = createFileRoute("/blog/$postId")({
         },
         {
           name: "keywords",
-          content: `${post.tags?.join(', ')}, Matthew Gale, blog, software development`,
+          content: `${post.tags?.join(", ")}, Matthew Gale, blog, software development`,
         },
         {
           name: "author",
@@ -76,7 +81,7 @@ export const Route = createFileRoute("/blog/$postId")({
         },
         {
           property: "article:tag",
-          content: post.tags?.join(', ') || '',
+          content: post.tags?.join(", ") || "",
         },
         {
           property: "twitter:card",
@@ -109,18 +114,21 @@ export const Route = createFileRoute("/blog/$postId")({
 // Custom CodeBlock component with copy functionality
 function CodeBlock({ children, className, ...props }: any) {
   const [copied, setCopied] = useState(false);
-  const isCodeBlock = className?.includes('language-');
-  
+  const isCodeBlock = className?.includes("language-");
+
   if (!isCodeBlock) {
     return (
-      <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
+      <code
+        className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono"
+        {...props}
+      >
         {children}
       </code>
     );
   }
 
-  const codeText = children?.toString() || '';
-  const language = className?.replace('language-', '') || '';
+  const codeText = children?.toString() || "";
+  const language = className?.replace("language-", "") || "";
 
   const copyToClipboard = async () => {
     try {
@@ -128,16 +136,14 @@ function CodeBlock({ children, className, ...props }: any) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error("Failed to copy text: ", err);
     }
   };
 
   return (
     <div className="code-block-container">
       <div className="code-block-header">
-        <span className="code-block-language">
-          {language}
-        </span>
+        <span className="code-block-language">{language}</span>
         <Button
           variant="ghost"
           size="sm"
@@ -153,9 +159,7 @@ function CodeBlock({ children, className, ...props }: any) {
         </Button>
       </div>
       <pre className="code-block-pre" {...props}>
-        <code className={className}>
-          {children}
-        </code>
+        <code className={className}>{children}</code>
       </pre>
     </div>
   );
@@ -169,12 +173,17 @@ function BlogPostComponent() {
   useEffect(() => {
     async function fetchPosts() {
       const all: BlogPost[] = await getAllBlogPosts();
-      setFeaturedPosts(all.filter((p: BlogPost) => p.featured && p.id !== post.id));
+      setFeaturedPosts(
+        all.filter((p: BlogPost) => p.featured && p.id !== post.id),
+      );
       setRecentPosts(
         all
           .filter((p: BlogPost) => p.id !== post.id)
-          .sort((a: BlogPost, b: BlogPost) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 3)
+          .sort(
+            (a: BlogPost, b: BlogPost) =>
+              new Date(b.date).getTime() - new Date(a.date).getTime(),
+          )
+          .slice(0, 3),
       );
     }
     fetchPosts();
@@ -182,7 +191,7 @@ function BlogPostComponent() {
 
   // Add some loading state to prevent flash
   useEffect(() => {
-    document.body.classList.add('loaded');
+    document.body.classList.add("loaded");
   }, []);
 
   if (!post) {
@@ -212,25 +221,41 @@ function BlogPostComponent() {
           <div className="sticky top-4 max-h-[calc(100vh-2rem)] overflow-auto bg-transparent border-muted/30 backdrop-blur-sm">
             <h3 className="text-lg font-semibold mb-4 mt-6">Featured Posts</h3>
             <ul className="space-y-2">
-              {featuredPosts.map(fp => (
+              {featuredPosts.map((fp) => (
                 <li key={fp.id}>
-                  <Link to="/blog/$postId" params={{ postId: fp.id }} className="hover:text-primary transition-colors">
+                  <Link
+                    to="/blog/$postId"
+                    params={{ postId: fp.id }}
+                    className="hover:text-primary transition-colors"
+                  >
                     {fp.title}
                   </Link>
                 </li>
               ))}
-              {featuredPosts.length === 0 && <li className="text-muted-foreground text-sm">No featured posts</li>}
+              {featuredPosts.length === 0 && (
+                <li className="text-muted-foreground text-sm">
+                  No featured posts
+                </li>
+              )}
             </ul>
             <h3 className="text-lg font-semibold mb-4 mt-6">Most Recent</h3>
             <ul className="space-y-2">
-              {recentPosts.map(rp => (
+              {recentPosts.map((rp) => (
                 <li key={rp.id}>
-                  <Link to="/blog/$postId" params={{ postId: rp.id }} className="hover:text-primary transition-colors">
+                  <Link
+                    to="/blog/$postId"
+                    params={{ postId: rp.id }}
+                    className="hover:text-primary transition-colors"
+                  >
                     {rp.title}
                   </Link>
                 </li>
               ))}
-              {recentPosts.length === 0 && <li className="text-muted-foreground text-sm">No recent posts</li>}
+              {recentPosts.length === 0 && (
+                <li className="text-muted-foreground text-sm">
+                  No recent posts
+                </li>
+              )}
             </ul>
           </div>
         </aside>
@@ -246,16 +271,16 @@ function BlogPostComponent() {
                 Back to Blogs
               </Link>
             </Button>
-            
+
             <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-            
+
             <div className="flex items-center gap-4 text-muted-foreground mb-4">
               <div className="flex items-center gap-1">
                 <CalendarDays className="w-4 h-4" />
-                {new Date(post.date).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+                {new Date(post.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </div>
               <div className="flex items-center gap-1">
@@ -263,7 +288,7 @@ function BlogPostComponent() {
                 {post.readTime}
               </div>
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag: string) => (
                 <Badge key={tag} variant="secondary">
@@ -273,171 +298,206 @@ function BlogPostComponent() {
             </div>
           </header>
 
-        <div className="prose prose-neutral dark:prose-invert max-w-none prose-lg">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight]}
-            components={{
-              // Custom image renderer for light/dark banners
-              img: ({ src, alt }) => {
-                if (src && src.endsWith('banner.png')) {
-                  // Try to find matching dark banner
-                  const darkSrc = src.replace('banner.png', 'banner-dark.png');
+          <div className="prose prose-neutral dark:prose-invert max-w-none prose-lg">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeHighlight]}
+              components={{
+                // Custom image renderer for light/dark banners
+                img: ({ src, alt }) => {
+                  if (src && src.endsWith("banner.png")) {
+                    // Try to find matching dark banner
+                    const darkSrc = src.replace(
+                      "banner.png",
+                      "banner-dark.png",
+                    );
+                    return (
+                      <>
+                        <img
+                          src={src}
+                          alt={alt}
+                          className="block dark:hidden w-full h-auto"
+                          style={{ aspectRatio: "8/3", objectFit: "cover" }}
+                        />
+                        <img
+                          src={darkSrc}
+                          alt={alt}
+                          className="hidden dark:block w-full h-auto"
+                          style={{ aspectRatio: "8/3", objectFit: "cover" }}
+                        />
+                      </>
+                    );
+                  }
+                  // Default image
+                  return <img src={src} alt={alt} />;
+                },
+                // Customize headings
+                h1: ({ children, ...props }) => {
+                  const id = String(children)
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/(^-|-$)/g, "");
                   return (
-                    <>
-                      <img
-                        src={src}
-                        alt={alt}
-                        className="block dark:hidden w-full h-auto"
-                        style={{ aspectRatio: '8/3', objectFit: 'cover' }}
-                      />
-                      <img
-                        src={darkSrc}
-                        alt={alt}
-                        className="hidden dark:block w-full h-auto"
-                        style={{ aspectRatio: '8/3', objectFit: 'cover' }}
-                      />
-                    </>
+                    <h1
+                      id={id}
+                      className="text-4xl font-bold mt-8 mb-4 text-foreground scroll-mt-4"
+                      {...props}
+                    >
+                      {children}
+                    </h1>
                   );
-                }
-                // Default image
-                return <img src={src} alt={alt} />;
-              },
-              // Customize headings
-              h1: ({ children, ...props }) => {
-                const id = String(children)
-                  .toLowerCase()
-                  .replace(/[^a-z0-9]+/g, '-')
-                  .replace(/(^-|-$)/g, '');
-                return (
-                  <h1 id={id} className="text-4xl font-bold mt-8 mb-4 text-foreground scroll-mt-4" {...props}>
-                    {children}
-                  </h1>
-                );
-              },
-              h2: ({ children, ...props }) => {
-                const id = String(children)
-                  .toLowerCase()
-                  .replace(/[^a-z0-9]+/g, '-')
-                  .replace(/(^-|-$)/g, '');
-                return (
-                  <h2 id={id} className="text-3xl font-semibold mt-8 mb-4 text-foreground scroll-mt-4" {...props}>
-                    {children}
-                  </h2>
-                );
-              },
-              h3: ({ children, ...props }) => {
-                const id = String(children)
-                  .toLowerCase()
-                  .replace(/[^a-z0-9]+/g, '-')
-                  .replace(/(^-|-$)/g, '');
-                return (
-                  <h3 id={id} className="text-2xl font-semibold mt-6 mb-3 text-foreground scroll-mt-4" {...props}>
-                    {children}
-                  </h3>
-                );
-              },
-              // Customize paragraphs
-              p: ({ children, ...props }) => (
-                <p className="mb-4 leading-7 text-foreground" {...props}>
-                  {children}
-                </p>
-              ),
-              // Customize code blocks styling
-              pre: ({ children, ...props }) => {
-                // Extract the code element from children
-                const codeElement = children as any;
-                if (codeElement?.props?.className?.includes('language-')) {
+                },
+                h2: ({ children, ...props }) => {
+                  const id = String(children)
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/(^-|-$)/g, "");
                   return (
-                    <CodeBlock className={codeElement.props.className} {...props}>
-                      {codeElement.props.children}
+                    <h2
+                      id={id}
+                      className="text-3xl font-semibold mt-8 mb-4 text-foreground scroll-mt-4"
+                      {...props}
+                    >
+                      {children}
+                    </h2>
+                  );
+                },
+                h3: ({ children, ...props }) => {
+                  const id = String(children)
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/(^-|-$)/g, "");
+                  return (
+                    <h3
+                      id={id}
+                      className="text-2xl font-semibold mt-6 mb-3 text-foreground scroll-mt-4"
+                      {...props}
+                    >
+                      {children}
+                    </h3>
+                  );
+                },
+                // Customize paragraphs
+                p: ({ children, ...props }) => (
+                  <p className="mb-4 leading-7 text-foreground" {...props}>
+                    {children}
+                  </p>
+                ),
+                // Customize code blocks styling
+                pre: ({ children, ...props }) => {
+                  // Extract the code element from children
+                  const codeElement = children as any;
+                  if (codeElement?.props?.className?.includes("language-")) {
+                    return (
+                      <CodeBlock
+                        className={codeElement.props.className}
+                        {...props}
+                      >
+                        {codeElement.props.children}
+                      </CodeBlock>
+                    );
+                  }
+                  return (
+                    <pre
+                      className="bg-muted p-4 rounded-lg overflow-x-auto border my-6"
+                      {...props}
+                    >
+                      {children}
+                    </pre>
+                  );
+                },
+                // Customize inline code styling
+                code: ({ children, className, ...props }) => {
+                  const isBlock = className?.includes("language-");
+                  return isBlock ? (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  ) : (
+                    <CodeBlock className={className} {...props}>
+                      {children}
                     </CodeBlock>
                   );
-                }
-                return (
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto border my-6" {...props}>
+                },
+                // Customize lists
+                ul: ({ children, ...props }) => (
+                  <ul
+                    className="list-disc list-inside mb-4 space-y-1"
+                    {...props}
+                  >
                     {children}
-                  </pre>
-                );
-              },
-              // Customize inline code styling
-              code: ({ children, className, ...props }) => {
-                const isBlock = className?.includes('language-');
-                return isBlock ? (
-                  <code className={className} {...props}>
+                  </ul>
+                ),
+                ol: ({ children, ...props }) => (
+                  <ol
+                    className="list-decimal list-inside mb-4 space-y-1"
+                    {...props}
+                  >
                     {children}
-                  </code>
-                ) : (
-                  <CodeBlock className={className} {...props}>
+                  </ol>
+                ),
+                li: ({ children, ...props }) => (
+                  <li className="text-foreground" {...props}>
                     {children}
-                  </CodeBlock>
-                );
-              },
-              // Customize lists
-              ul: ({ children, ...props }) => (
-                <ul className="list-disc list-inside mb-4 space-y-1" {...props}>
-                  {children}
-                </ul>
-              ),
-              ol: ({ children, ...props }) => (
-                <ol className="list-decimal list-inside mb-4 space-y-1" {...props}>
-                  {children}
-                </ol>
-              ),
-              li: ({ children, ...props }) => (
-                <li className="text-foreground" {...props}>
-                  {children}
-                </li>
-              ),
-              // Customize links
-              a: ({ children, href, ...props }) => (
-                <a 
-                  href={href} 
-                  className="text-primary hover:underline font-medium" 
-                  target={href?.startsWith('http') ? '_blank' : undefined}
-                  rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  {...props}
-                >
-                  {children}
-                </a>
-              ),
-              // Customize blockquotes
-              blockquote: ({ children, ...props }) => (
-                <blockquote className="border-l-4 border-primary pl-4 italic my-6 text-muted-foreground" {...props}>
-                  {children}
-                </blockquote>
-              ),
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
-        </div>
+                  </li>
+                ),
+                // Customize links
+                a: ({ children, href, ...props }) => (
+                  <a
+                    href={href}
+                    className="text-primary hover:underline font-medium"
+                    target={href?.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      href?.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    {...props}
+                  >
+                    {children}
+                  </a>
+                ),
+                // Customize blockquotes
+                blockquote: ({ children, ...props }) => (
+                  <blockquote
+                    className="border-l-4 border-primary pl-4 italic my-6 text-muted-foreground"
+                    {...props}
+                  >
+                    {children}
+                  </blockquote>
+                ),
+              }}
+            >
+              {post.content}
+            </ReactMarkdown>
+          </div>
 
-        {/* Author Section */}
-        <div className="mt-12 pt-8 border-t border-muted">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0">
-              <img
-                src="https://github.com/mgale694.png"
-                alt="Matthew Gale"
-                className="w-16 h-16 rounded-full"
-              />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Matthew Gale</h3>
-              <p className="text-muted-foreground mb-3">
-                Quantitative Developer - Python, Azure, CI/CD, Risk Modelling, Typescript - Learning Rust & C++
-              </p>
+          {/* Author Section */}
+          <div className="mt-12 pt-8 border-t border-muted">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <img
+                  src="https://github.com/mgale694.png"
+                  alt="Matthew Gale"
+                  className="w-16 h-16 rounded-full"
+                />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Matthew Gale</h3>
+                <p className="text-muted-foreground mb-3">
+                  Quantitative Developer - Python, Azure, CI/CD, Risk Modelling,
+                  Typescript - Learning Rust & C++
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      {/* Table of Contents - Desktop sidebar */}
-      <aside className="hidden lg:block">
-        <TableOfContents content={post.content} />
-      </aside>
-    </div>
+        {/* Table of Contents - Desktop sidebar */}
+        <aside className="hidden lg:block">
+          <TableOfContents content={post.content} />
+        </aside>
+      </div>
     </div>
   );
 }

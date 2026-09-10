@@ -5,10 +5,10 @@ import path from "node:path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: '/', // Always use root path for Cloudflare Pages
+  base: "/", // Always use root path for Cloudflare Pages
   plugins: [
     tailwindcss(),
-    tanstackRouter({}),
+    tanstackRouter({ autoCodeSplitting: true }),
     react(),
   ],
   resolve: {
@@ -18,32 +18,35 @@ export default defineConfig({
   },
   build: {
     // Optimize for Cloudflare Pages and SEO
-    target: 'esnext',
-    minify: 'esbuild',
+    target: "esnext",
+    minify: "esbuild",
     cssMinify: true,
     rollupOptions: {
       output: {
         // Better chunk splitting for caching and SEO performance
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['@tanstack/react-router'],
-          ui: ['lucide-react', 'class-variance-authority', 'clsx'],
-          markdown: ['react-markdown', 'remark-gfm', 'rehype-highlight'],
+          vendor: ["react", "react-dom"],
+          router: ["@tanstack/react-router"],
+          ui: ["lucide-react", "class-variance-authority", "clsx"],
         },
         // Ensure consistent file names for better caching
         assetFileNames: (assetInfo) => {
-          const info = assetInfo.name?.split('.') || [];
+          const info = assetInfo.name?.split(".") || [];
           const ext = info[info.length - 1];
-          if (/\.(css)$/.test(assetInfo.name || '')) {
+          if (/\.(css)$/.test(assetInfo.name || "")) {
             return `assets/css/[name]-[hash].${ext}`;
           }
-          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico|webp)$/i.test(assetInfo.name || '')) {
+          if (
+            /\.(png|jpe?g|svg|gif|tiff|bmp|ico|webp)$/i.test(
+              assetInfo.name || "",
+            )
+          ) {
             return `assets/images/[name]-[hash].${ext}`;
           }
           return `assets/[name]-[hash].${ext}`;
         },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
+        chunkFileNames: "assets/js/[name]-[hash].js",
+        entryFileNames: "assets/js/[name]-[hash].js",
       },
     },
     // Enable source maps for better debugging (disable in production)
@@ -61,8 +64,8 @@ export default defineConfig({
   },
   // Enable experimental features for better performance
   esbuild: {
-    legalComments: 'none',
+    legalComments: "none",
     // Remove console.log in production for better performance
-    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+    drop: process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],
   },
 });

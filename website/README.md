@@ -1,45 +1,18 @@
-# my-better-t-app
+# Website workspace
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React, TanStack Router, and more.
-
-## Features
-
-- **TypeScript** - For type safety and improved developer experience
-- **TanStack Router** - File-based routing with full type safety
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Turborepo** - Optimized monorepo build system
-
-## Getting Started
-
-First, install the dependencies:
+The web application is in `apps/web`. Its content, component catalogue and hosting notes are documented in the [repository README](../README.md), [COMPONENTS.md](../COMPONENTS.md) and [DEPLOYMENT.md](../DEPLOYMENT.md).
 
 ```bash
 bun install
+bun run dev:web
+bun run build:web
 ```
 
+Production output: `apps/web/dist`.
 
-Then, run the development server:
+The photography site uses the same workspace structure. Run this application on port 3002 when the photography development server occupies port 3001:
 
 ```bash
-bun dev
+cd apps/web
+npm run dev -- --port 3002
 ```
-
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-
-
-
-## Project Structure
-
-```
-my-better-t-app/
-├── apps/
-│   ├── web/         # Frontend application (React + TanStack Router)
-```
-
-## Available Scripts
-
-- `bun dev`: Start all applications in development mode
-- `bun build`: Build all applications
-- `bun dev:web`: Start only the web application
-- `bun check-types`: Check TypeScript types across all apps

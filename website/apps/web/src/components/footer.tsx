@@ -1,86 +1,19 @@
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { site } from "@/content/site";
+import { Wordmark } from "./portfolio/wordmark";
+import { Eyebrow } from "./portfolio/typography";
+import { TextLink } from "./portfolio/text-link";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="border-t bg-footer">
-      <div className="container mx-auto max-w-6xl px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Matthew Gale</h3>
-            <p className="text-sm text-muted-foreground">
-              Quantitative Developer passionate about building elegant solutions to complex problems.
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold uppercase tracking-wider">Quick Links</h4>
-            <nav className="flex flex-col space-y-2">
-              <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Home
-              </Link>
-              <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                About
-              </Link>
-              <Link to="/showcase" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Showcase
-              </Link>
-              <Link to="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Blog
-              </Link>
-            </nav>
-          </div>
-
-          {/* Contact & Social */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold uppercase tracking-wider">Connect</h4>
-            <div className="flex space-x-4">
-              <a
-                href="https://github.com/mgale694"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a
-                href="https://linkedin.com/in/M-Gale"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:hello@mattgale.com"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Email"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Feel free to reach out for collaborations or just to say hello!
-            </p>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="mt-8 pt-8 border-t flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
-          <p className="text-xs text-muted-foreground">
-            © {currentYear} Matthew Gale. All rights reserved.
-          </p>
-          <p className="text-xs text-muted-foreground flex items-center gap-1">
-            Built with <Heart className="w-3 h-3 text-red-500" /> using React, TypeScript & Tailwind CSS
-          </p>
-        </div>
-      </div>
+    <footer className="site-footer tone-paper">
+      <Wordmark />
+      <Eyebrow>
+        © {new Date().getFullYear()} {site.name}
+      </Eyebrow>
+      <Eyebrow className="site-footer__role">Markets. Models. Systems.</Eyebrow>
+      <TextLink href="/#home" icon="arrowUp">
+        Back to top
+      </TextLink>
     </footer>
   );
 }

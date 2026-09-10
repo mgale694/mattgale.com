@@ -9,16 +9,12 @@
   "orm": "none",
   "backend": "none",
   "runtime": "none",
-  "frontend": [
-    "tanstack-router"
-  ],
-  "addons": [
-    "turborepo"
-  ],
+  "frontend": ["tanstack-router"],
+  "addons": ["turborepo"],
   "examples": [],
   "auth": false,
   "packageManager": "bun",
   "dbSetup": "none",
   "api": "none",
-  "webDeploy": "none"
+  "webDeploy": "none",
 }
