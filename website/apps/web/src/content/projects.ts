@@ -47,7 +47,7 @@ export const projects: Project[] = [
     status: "Building",
     featured: true,
     liveUrl: researchUrl(),
-    articleSlug: "mapping-macro-regimes-without-false-precision",
+    // articleSlug: "mapping-macro-regimes-without-false-precision",
     preview: {
       type: "image",
       src: "/showcase/atlas-homepage.webp",
