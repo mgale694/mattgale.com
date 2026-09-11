@@ -108,9 +108,9 @@ export function ProjectExhibition({
             >
               <div className="project-exhibition__intro">
                 <Eyebrow>
-                  Built with purpose.
+                  Independent projects.
                   <br />
-                  Led by curiosity.
+                  Production standards.
                 </Eyebrow>
                 <DisplayHeading id="work-title">
                   Selected
@@ -118,11 +118,10 @@ export function ProjectExhibition({
                   work<span className="signal-text">.</span>
                 </DisplayHeading>
                 <p>
-                  Some built for the day job.
+                  Tools for markets.
                   <br />
-                  Others for the questions
-                  <br />
-                  that won’t leave me alone.
+                  Experiments in systems.
+                  <br />Places seen through film.
                 </p>
               </div>
               {projects.map((project, index) => (

@@ -921,6 +921,9 @@ details > summary:hover .disclosure-icon {
 }
 .contact {
   padding-top: 37px;
+  min-height: calc(100svh - var(--header-height));
+  display: flex;
+  flex-direction: column;
 }
 .contact__grid {
   display: grid;
@@ -1037,7 +1040,7 @@ details > summary:hover .disclosure-icon {
   border-left: 1px solid var(--rule);
 }
 .contact > .editorial-divider {
-  margin-top: 60px;
+  margin-top: auto;
 }
 .site-footer {
   display: flex;
@@ -1157,6 +1160,10 @@ details > summary:hover .disclosure-icon {
   }
   .about__details {
     grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .credential-strip {
+    grid-template-columns: 150px 1fr;
     gap: 30px;
   }
   .skill-column {
@@ -1372,6 +1379,19 @@ details > summary:hover .disclosure-icon {
   .about__details {
     margin: 30px 0;
   }
+  .credential-strip {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px 0;
+  }
+  .credential-strip ul {
+    grid-template-columns: 1fr;
+  }
+  .credential-strip li {
+    padding: 13px 0;
+    border-top: 1px solid var(--rule);
+    border-left: 0;
+  }
   .skill-column {
     padding: 0 11px;
     min-width: 0;
@@ -1433,6 +1453,15 @@ details > summary:hover .disclosure-icon {
   }
   .experience-row ul {
     font-size: 13px;
+  }
+  .cv-details__certifications {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .cv-details__certifications > div + div {
+    padding: 20px 0 0;
+    border-top: 1px solid var(--rule);
+    border-left: 0;
   }
   .work {
     padding-bottom: 30px;
@@ -1671,6 +1700,7 @@ details > summary:hover .disclosure-icon {
   .about > .section-label,
   .about__intro,
   .about__details,
+  .credential-strip,
   .about > .editorial-divider,
   .cv-details > summary,
   .cv-details__intro button {
@@ -2133,10 +2163,6 @@ html[data-appearance-direction="to-dark"]::view-transition-new(root) {
   font: 900 clamp(90px, 13vw, 220px)/0.78 var(--font-display);
   letter-spacing: -0.035em;
 }
-.artwork-type--risk {
-  left: 5%;
-  top: 20%;
-}
 .project-artwork--atlas {
   background: var(--signal);
   aspect-ratio: 0.85;
@@ -2288,7 +2314,7 @@ html[data-appearance-direction="to-dark"]::view-transition-new(root) {
   align-items: center;
   width: max-content;
   height: 100%;
-  gap: clamp(65px, 9vw, 170px);
+  gap: clamp(100px, 11vw, 190px);
   padding: 0 max(var(--gutter), 6vw) 0 var(--gutter);
   animation: exhibition-pan 1s linear both;
   animation-timeline: --exhibition;
@@ -2313,11 +2339,6 @@ html[data-appearance-direction="to-dark"]::view-transition-new(root) {
   height: calc((100svh - 260px) * var(--art-scale, 0.64));
   aspect-ratio: auto;
 }
-.project-exhibition[data-staged="true"] .project-exhibit--professional {
-  --exhibit-width: clamp(480px, 43vw, 760px);
-  --exhibit-offset: -6svh;
-  margin-right: -12vw;
-}
 .project-exhibition[data-staged="true"] .project-exhibit--atlas {
   --exhibit-width: clamp(360px, 31vw, 550px);
   --art-scale: 0.78;
@@ -2333,7 +2354,6 @@ html[data-appearance-direction="to-dark"]::view-transition-new(root) {
   --exhibit-width: clamp(340px, 30vw, 560px);
   --art-scale: 0.58;
   --exhibit-offset: 6svh;
-  margin-left: -17vw;
 }
 .project-exhibition[data-staged="true"] .project-exhibit--photography {
   --exhibit-width: clamp(570px, 53vw, 940px);

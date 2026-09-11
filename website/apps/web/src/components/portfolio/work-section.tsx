@@ -41,8 +41,8 @@ export function WorkSection({ paused = false }: { paused?: boolean }) {
       {writing && (
         <div className="writing-note">
           <div>
-            <Eyebrow>Thinking out loud</Eyebrow>
-            <p>Research, ideas and the work behind the work.</p>
+            <Eyebrow>Market research</Eyebrow>
+            <p>Analysis, implementation notes and quantitative research.</p>
           </div>
           <TextLink href={writing}>Read my writing at Atlas</TextLink>
         </div>

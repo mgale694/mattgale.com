@@ -102,15 +102,6 @@ export function ProjectArtwork({
       aria-hidden="true"
     >
       {projectId !== "uvve" && <ContourStudy variant={projectId} />}
-      {projectId === "professional" && (
-        <>
-          <Eyebrow className="artwork-top">Models into practice</Eyebrow>
-          <span className="artwork-type artwork-type--risk">
-            RISK<span className="signal-text">.</span>
-          </span>
-          <span className="artwork-foot">Quantitative engineering</span>
-        </>
-      )}
       {projectId === "atlas" && (
         <>
           <Eyebrow className="artwork-top">Independent market research</Eyebrow>
@@ -124,7 +115,7 @@ export function ProjectArtwork({
       )}
       {projectId === "trading" && (
         <>
-          <Eyebrow className="artwork-top">An independent exploration</Eyebrow>
+          <Eyebrow className="artwork-top">Market execution research</Eyebrow>
           <span className="artwork-type artwork-type--trade">
             BUY.
             <br />
@@ -137,9 +128,7 @@ export function ProjectArtwork({
       )}
       {projectId === "flight" && (
         <>
-          <Eyebrow className="artwork-top">
-            A little curiosity, overhead.
-          </Eyebrow>
+          <Eyebrow className="artwork-top">Live aviation data</Eyebrow>
           <span className="artwork-type artwork-type--flight">
             LOOK
             <br />

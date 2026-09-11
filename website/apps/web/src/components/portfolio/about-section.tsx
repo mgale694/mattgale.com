@@ -71,7 +71,7 @@ export function AboutSection({ paused }: { paused: boolean }) {
         <CredentialStrip items={certifications} />
       </Reveal>
       <CvDetails />
-      <Divider label="Build something useful" end="Keep asking questions" />
+      <Divider label="Build reliable systems" end="Models / Data / Software" />
     </Section>
   );
 }

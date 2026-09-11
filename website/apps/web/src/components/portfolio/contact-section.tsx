@@ -15,7 +15,7 @@ export function ContactSection({ paused }: { paused: boolean }) {
       className="contact"
       aria-labelledby="contact-title"
     >
-      <SectionLabel number="04" note="Good things start with a conversation">
+      <SectionLabel number="04" note="Finance / Engineering / Systems">
         Contact
       </SectionLabel>
       <div className="contact__grid">
@@ -31,8 +31,8 @@ export function ContactSection({ paused }: { paused: boolean }) {
           />
           <span className="signal-line" />
           <p className="body-large">
-            I’m always open to interesting conversations about quantitative
-            development, finance, coding projects and collaboration.
+            I’m open to conversations about quantitative development,
+            financial modelling, risk systems and software engineering.
           </p>
         </div>
         <div className="contact__visual">
@@ -54,22 +54,18 @@ export function ContactSection({ paused }: { paused: boolean }) {
           <div className="contact__location">
             <Eyebrow>
               London, UK
-              <br />
-              <span className="muted-text">
-                Open to a different perspective.
-              </span>
             </Eyebrow>
             <p>
-              Let’s build
+              Build robust
               <br />
-              something interesting.
+              systems for production.
             </p>
           </div>
         </Reveal>
       </div>
       <Divider
-        label="Ideas / Systems / People"
-        end="Keep the conversation going"
+        label="Markets / Models / Software"
+        end="Quantitative development"
       />
     </Section>
   );

@@ -35,7 +35,7 @@ export function HeroSection({
       </div>
       <div className="hero__title-block">
         <Eyebrow className="hero__eyebrow">
-          <SignalDot /> Finance, technology & curiosity
+          <SignalDot /> Finance / Engineering / Systems
         </Eyebrow>
         <DisplayHeading as="h1" id="hero-title" className="hero__name">
           <RollingText text="Matthew Gale" paused={paused} />
@@ -52,7 +52,7 @@ export function HeroSection({
       </div>
       <div className="hero__bottom">
         <TextLink href="#about" icon="arrowDown">
-          Explore the work & the person
+          View background & selected work
         </TextLink>
         <Eyebrow>Based in London, UK</Eyebrow>
         <button

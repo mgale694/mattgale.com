@@ -27,16 +27,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: "professional",
-    title: "Professional quant engineering",
-    description: "Financial models. Production software. Real-world risk.",
-    details:
-      "Python-based credit and risk models, reusable analysis tools, cloud infrastructure and model execution systems. My work brings modelling and software engineering together, with a focus on maintainable systems and repeatable analysis.",
-    technologies: ["Python", "SQL", "Azure", "CI/CD"],
-    status: "Private",
-    featured: true,
-  },
-  {
     id: "atlas",
     title: "Atlas Signals",
     description:
@@ -70,7 +60,7 @@ export const projects: Project[] = [
   {
     id: "flight",
     title: "Flight tracker",
-    description: "A little curiosity about the planes passing overhead.",
+    description: "Live aircraft data, filtered by route and direction.",
     details:
       "An application that fetches live flight data and shows the aircraft overhead, filtered by direction. Built with Python and Streamlit, with Raspberry Pi use in mind.",
     technologies: ["Python", "APIs", "Raspberry Pi"],
@@ -107,17 +97,6 @@ export const projects: Project[] = [
     status: "Open source",
     featured: true,
     githubUrl: "https://github.com/hedge-quill/uvve",
-  },
-  {
-    id: "personal",
-    title: "This little corner of the web",
-    description: "A personal home for my work, background and ideas.",
-    details:
-      "An editorial one-page portfolio built from reusable React components. The design pairs strong typography with abstract line studies, accessible interactions and a small, documented design system.",
-    technologies: ["React", "TypeScript", "Vite"],
-    status: "Live",
-    featured: false,
-    githubUrl: "https://github.com/mgale694/matthewgale.co.uk",
   },
   {
     id: "cadence",
